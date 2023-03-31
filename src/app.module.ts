@@ -1,13 +1,37 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Global, Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
-import { databaseProviders } from './utils/providers';
 import { PostModule } from './post/post.module';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { ConfigModule } from '@nestjs/config';
+import { TracingModule } from './tracing/tracing.module';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { GlobalJwtService } from './jwt/jwt.service';
 
+@Global()
 @Module({
-  imports: [UserModule, PostModule],
-  controllers: [AppController],
-  providers: [AppService, ...databaseProviders],
+  imports: [
+      JwtModule.register({secret: process.env.JWT_SECRET}),
+      ConfigModule.forRoot({
+        envFilePath: `.${process.env.NODE_ENV}.env`
+      }),
+      TracingModule,
+      UserModule, PostModule,
+      SequelizeModule.forRoot({
+        dialect: 'postgres',
+        host: process.env.DB_HOST,
+        port: Number.parseInt(process.env.DB_PORT),
+        username: `${process.env.DB_USERNAME}`,
+        password: `${process.env.DB_PASSWORD}`,
+        database: `${process.env.DB_DATABASE}`,
+        autoLoadModels: true
+      }),
+      JwtModule,
+  ],
+    providers: [JwtService, GlobalJwtService],
+  exports:[
+      SequelizeModule,
+      JwtService,
+      GlobalJwtService
+  ],
 })
 export class AppModule {}

@@ -1,10 +1,15 @@
-import { Column, CreatedAt, DataType, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
+import { Column, CreatedAt, DataType, ForeignKey, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
+import { User } from '../../user/models/user.model';
 
 @Table({tableName: 'posts', underscored: true})
 export class Post extends Model<Post> {
     @PrimaryKey
-    @Column({type: DataType.INTEGER, unique: true})
-    id: string;
+    @Column({type: DataType.INTEGER, unique: true, autoIncrement: true})
+    id: number;
+
+    @ForeignKey(() => User)
+    @Column
+    user_id: string;
 
     @Column({type: DataType.STRING, unique: true, allowNull: false})
     title: string;
@@ -13,8 +18,10 @@ export class Post extends Model<Post> {
     text: string;
 
     @CreatedAt
+    @Column({type: DataType.DATE, allowNull: false})
     created_at: Date;
 
     @UpdatedAt
+    @Column({type: DataType.DATE, allowNull: false})
     updated_at: Date;
 }

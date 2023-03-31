@@ -9,10 +9,11 @@ export class User extends Model<User> {
     @Column({type: DataType.STRING, unique: false, allowNull: false})
     password: string;
 
-
     @CreatedAt
+    @Column({type: DataType.DATE, allowNull: false})
     created_at: Date;
 
     @UpdatedAt
+    @Column({type: DataType.DATE, allowNull: false})
     updated_at: Date;
 }
