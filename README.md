@@ -28,6 +28,27 @@
 
 ## Installation
 
+## Requires .development.env file (if NODE_ENV=development)  
+```dotenv
+#database connection
+PORT=
+DB_HOST=
+DB_PORT=
+DB_USERNAME=
+DB_PASSWORD=
+DB_DATABASE=
+#Jwt secret phraze
+JWT_SECRET=
+#jwt ref token 
+JWT_REFRESH_TOKEN_EXPIRES=
+JWT_REFRESH_TOKEN_KEY=
+#jwt acc token
+COOKIE_SECRET=
+JWT_ACCESS_TOKEN_EXPIRES=
+JWT_ACCESS_TOKEN_KEY=
+```
+
+
 ```bash
 $ npm install
 ```

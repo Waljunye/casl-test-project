@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TracingModule } from './tracing/tracing.module';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { GlobalJwtService } from './jwt/jwt.service';
+import { AuthGuard } from './Guards/AuthGuard';
 
 @Global()
 @Module({
@@ -27,11 +28,12 @@ import { GlobalJwtService } from './jwt/jwt.service';
       }),
       JwtModule,
   ],
-    providers: [JwtService, GlobalJwtService],
+    providers: [JwtService, GlobalJwtService, AuthGuard],
   exports:[
       SequelizeModule,
       JwtService,
-      GlobalJwtService
+      GlobalJwtService,
+      AuthGuard
   ],
 })
 export class AppModule {}

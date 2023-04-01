@@ -5,9 +5,18 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     const table = queryInterface.createTable('posts', {
       id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         primaryKey: true,
         unique: true
+      },
+      user_id: {
+        type: Sequelize.STRING,
+        references:{
+          model: 'users',
+          key: 'id'
+        },
+        allowNull: false,
+        unique: false
       },
       title: {
         type: Sequelize.STRING,
@@ -27,13 +36,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-    })
-    queryInterface.addColumn('posts', 'user_id', {
-      type: Sequelize.STRING,
-      references: {
-        model: 'users',
-        key: 'id'
-      }
     })
   },
 

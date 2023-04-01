@@ -1,12 +1,13 @@
-import { Body, Controller, Get, Param, Req, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Req, Post, UseGuards } from '@nestjs/common';
 import { PostService } from './post.service';
 import { Post as PostRes } from './models/post.model';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOAuth2, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
 import { PostCreteDto } from './dto/post-create.dto';
 import { UserService } from '../user/user.service';
 import { GlobalJwtService } from '../jwt/jwt.service';
 import { UnauthorizedException } from '../utils/exceptions';
+import { AuthGuard } from '../Guards/AuthGuard';
 
 @ApiTags('Post')
 @Controller('post')
@@ -26,10 +27,14 @@ export class PostController {
         return this.postService.getById(id);
     }
 
+    @ApiOAuth2([])
+    @UseGuards(AuthGuard)
     @Post('')
     async create(@Body() postCreateDto: PostCreteDto, @Req() req: FastifyRequest){
-        const refToken = req.cookies['refresh_token']
-        const userPayload = await this.globalJwtService.validateRefreshToken(refToken);
+        const accToken = req.headers.authorization.split(' ')[1];
+        console.log(req.headers.authorization.split(' ')[1])
+        const userPayload = await this.globalJwtService.validateAccessToken(accToken);
+        console.log(userPayload)
         if(userPayload){
             //@ts-ignore
             await this.postService.create(userPayload.id, postCreateDto)

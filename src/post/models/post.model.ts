@@ -1,8 +1,14 @@
 import { Column, CreatedAt, DataType, ForeignKey, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
 import { User } from '../../user/models/user.model';
 
+interface PostCreationAttrs{
+    id: string;
+    user_id: string;
+    title: string;
+    text: string;
+}
 @Table({tableName: 'posts', underscored: true})
-export class Post extends Model<Post> {
+export class Post extends Model<Post, PostCreationAttrs> {
     @PrimaryKey
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true})
     id: number;
