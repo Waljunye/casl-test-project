@@ -1,6 +1,5 @@
 import { Global, Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
-import { PostModule } from './post/post.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 import { TracingModule } from './tracing/tracing.module';
@@ -16,7 +15,7 @@ import { AuthGuard } from './Guards/AuthGuard';
         envFilePath: `.${process.env.NODE_ENV}.env`
       }),
       TracingModule,
-      UserModule, PostModule,
+      UserModule,
       SequelizeModule.forRoot({
         dialect: 'postgres',
         host: process.env.DB_HOST,

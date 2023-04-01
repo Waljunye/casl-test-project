@@ -14,7 +14,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
 
   const options = new DocumentBuilder()
-      .setTitle('User-Post architecture carcass')
+      .setTitle('User architecture carcass')
       .setDescription('For testing features')
       .setVersion('0.1')
       .addOAuth2({
